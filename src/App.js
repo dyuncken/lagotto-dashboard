@@ -91,12 +91,23 @@ export default function App() {
 
   return (
     <div className="p-4 space-y-4">
-      <Input
-        type="text"
-        placeholder="Enter Week Ending Date (e.g. 6/07/2025)"
-        value={selectedDate}
-        onChange={(e) => setSelectedDate(e.target.value)}
-      />
+      <select
+  value={selectedDate}
+  onChange={(e) => setSelectedDate(e.target.value)}
+  style={{ padding: "8px", fontSize: "1rem", width: "100%", borderRadius: "4px", marginBottom: "16px" }}
+>
+  <option value="">Select Week Ending Date</option>
+  {data
+    .map(row => row["Week Ending Date"])
+    .filter((d, i, arr) => arr.indexOf(d) === i)  // remove duplicates
+    .sort()
+    .map((date) => (
+      <option key={date} value={date}>
+        {date}
+      </option>
+    ))}
+</select>
+
 
       {filteredData ? (
         <>
