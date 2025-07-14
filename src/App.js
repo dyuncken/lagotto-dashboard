@@ -30,7 +30,7 @@ export default function App() {
 
   if (!row) {
     return (
-      <div style={{ maxWidth: 700, margin: "40px auto", fontFamily: "Arial, sans-serif", textAlign: "center" }}>
+      <div style={{ maxWidth: 700, margin: "40px auto", textAlign: "center" }}>
         <DatePicker
           selected={selectedDate}
           onChange={setSelectedDate}
@@ -52,11 +52,11 @@ export default function App() {
   const coverGain = totalCovers - satCovers;
 
   // Revenue
-  const revFood = toNum(row["Revenue  Food"]);
-  const revBeer = toNum(row["Revenue  Beer & Cider"]);
-  const revNon = toNum(row["Revenue  NonAlcoholic"]);
-  const revSpirits = toNum(row["Revenue  Spirits & Cocktails"]);
-  const revWine = toNum(row["Revenue  Wine"]);
+  const revBeer = toNum(row["Revenue Beer & Cider"]);
+  const revFood = toNum(row["Revenue Food"]);
+  const revNon = toNum(row["Revenue NonAlcoholic"]);
+  const revSpirits = toNum(row["Revenue Spirits & Cocktails"]);
+  const revWine = toNum(row["Revenue Wine"]);
   const revBeverage = revBeer + revNon + revSpirits + revWine;
   const revTotal = revFood + revBeverage;
 
@@ -66,12 +66,12 @@ export default function App() {
   const spendPerBeverage = totalCovers ? (revBeverage * 1.1) / totalCovers : 0;
 
   // Purchases
-  const purFood = toNum(row["Purchases  Food"]);
-  const purBeer = toNum(row["Purchases  Beverage  Beer"]);
-  const purNon = toNum(row["Purchases  Beverage  NonAlcoholic"]);
-  const purSpirits = toNum(row["Purchases  Beverage  Spirit"]);
-  const purWine = toNum(row["Purchases  Beverage  Wine"]);
-  const purCoffee = toNum(row["Purchases  Beverage  COFFEE"]);
+  const purBeer = toNum(row["Purchases Beverage  Beer"]);
+  const purFood = toNum(row["Purchases Food"]);
+  const purNon = toNum(row["Purchases Beverage NonAlcoholic"]);
+  const purSpirits = toNum(row["Purchases Beverage Spirit"]);
+  const purWine = toNum(row["Purchases Beverage Wine"]);
+  const purCoffee = toNum(row["Purchases Beverage COFFEE"]);
   const purBeverage = purBeer + purNon + purSpirits + purWine + purCoffee;
   const purTotal = purFood + purBeverage;
 
@@ -87,19 +87,25 @@ export default function App() {
   // Wages BOH
   const BOHNorm = toNum(row["Wages BOH Normal"]);
   const BOHOT = toNum(row["Wages BOH OT"]);
-  const BOHAdd = toNum(row["Wages BOH Additional costs"]);
-  const BOHOTacc = toNum(row["Wages BOH Accumulated OT"]);
-  const BOHTotal = BOHNorm + BOHOT + BOHAdd + BOHOTacc;
   const BOHHours = toNum(row["Wages BOH Hours"]);
+  const BOHAdd = toNum(row["Wages BOH Additional costs"]);
+  const BOHOTacc = toNum(row["BOH Accumulated OT Keoghan"])
+    + toNum(row["BOH Accumulated OT Matteo"])
+    + toNum(row["BOH Accumulated OT Shodip"])
+    + toNum(row["BOH Accumulated OT William"])
+    + toNum(row["BOH Accumulated OT Chana"])
+    + toNum(row["BOH Accumulated OT Ethan"])
+    + toNum(row["BOH Accumulated OT Catherine"]);
+  const BOHTotal = BOHNorm + BOHOT + BOHAdd + BOHOTacc;
   const BOHHoursInc = BOHHours + BOHAdd / 30;
 
   // Wages FOH
   const FOHNorm = toNum(row["Wages FOH Normal"]);
   const FOHOT = toNum(row["Wages FOH OT"]);
-  const FOHAdd = toNum(row["Wages FOH Additional costs"]);
-  const FOHOTacc = toNum(row["Wages FOH Accumulated OT"]);
-  const FOHTotal = FOHNorm + FOHOT + FOHAdd + FOHOTacc;
   const FOHHours = toNum(row["Wages FOH Hours"]);
+  const FOHAdd = toNum(row["Wages FOH Additional costs"]);
+  const FOHOTacc = toNum(row["FOH Accumulated OT Liam"]) + toNum(row["FOH Accumulated OT Katya"]);
+  const FOHTotal = FOHNorm + FOHOT + FOHAdd + FOHOTacc;
   const FOHHoursInc = FOHHours + FOHAdd / 30;
 
   const wagesTotal = BOHTotal + FOHTotal;
@@ -108,26 +114,25 @@ export default function App() {
 
   return (
     <div style={{ maxWidth: 700, margin: "40px auto", fontFamily: "Arial, sans-serif", lineHeight: 1.4 }}>
-      <label style={{ display: "block", marginBottom: 20 }}>
+      <label>
         Fixed Expenses:{" "}
         <input
           type="number"
           value={fixedExpenses}
           onChange={e => setFixedExpenses(parseFloat(e.target.value) || 0)}
-          style={{ width: "120px", marginLeft: "8px" }}
+          style={{ width: "120px", marginBottom: "20px" }}
         />
       </label>
 
-      <div style={{ textAlign: "center", marginBottom: 20 }}>
-        <DatePicker
-          selected={selectedDate}
-          onChange={setSelectedDate}
-          placeholderText="Select Week Ending Sunday"
-          dateFormat="dd MMM yyyy"
-          calendarStartDay={1}
-          filterDate={d => d.getDay() === 0}
-        />
-      </div>
+      <DatePicker
+        selected={selectedDate}
+        onChange={setSelectedDate}
+        placeholderText="Select Week Ending Sunday"
+        dateFormat="dd MMM yyyy"
+        calendarStartDay={1}
+        filterDate={d => d.getDay() === 0}
+        style={{ display: "block", margin: "20px auto" }}
+      />
 
       {/* Covers */}
       <h2>Covers</h2>
